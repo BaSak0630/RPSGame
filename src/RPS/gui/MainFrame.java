@@ -25,11 +25,13 @@ public class MainFrame extends JFrame {
         setLocation((screenWidth - frameWidth) / 2, (screenHeight - frameHeight) / 2);
         setTitle("RPS");
 
+        mainView = new MainView();
+        add(mainView);
+
         stratDialog = new StratDialog(mainFrame);
         stratDialog.setVisible(true);
 
-        mainView = new MainView();
-        add(mainView);
+
 
         addWindowListener(new WindowAdapter() {
             @Override
