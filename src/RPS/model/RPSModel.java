@@ -3,41 +3,35 @@ package RPS.model;
 import RPS.gui.MainView;
 
 import java.awt.*;
-import java.awt.image.ImageObserver;
 import java.util.*;
 
 public class RPSModel {
-    ArrayList<RPSObject> rpsObjects = new ArrayList<>();
+    public ArrayList<RPSObject> rpsObjects;
     RPSObject tmp;
     MainView mainView;
-    public RPSModel(MainView mainView) {
+    Random random = new Random();
+    Graphics g;
+    public RPSModel(MainView mainView,Graphics g) {
         this.mainView =mainView;
+        this.g = g;
+        rpsObjects = new ArrayList<>();
     }
 
     public void setNumberRPSObject(int numOfRock, int numOfPaper, int numOfScissors) {
         for (int i = 0; i < numOfRock; i++) {
-            tmp  = new RPSObject("rock",0,0);
+            tmp  = new RPSObject(g,"rock",random.nextInt(mainView.mainFrame.getFrameWidth()),random.nextInt(mainView.mainFrame.getFrameHeight()),mainView);
             rpsObjects.add(tmp);
         }
         for (int i = 0; i < numOfPaper; i++) {
-            tmp  = new RPSObject("paper",10,10);
+            tmp  = new RPSObject(g,"paper",random.nextInt(mainView.mainFrame.getFrameWidth()),random.nextInt(mainView.mainFrame.getFrameHeight()),mainView);
             rpsObjects.add(tmp);
         }
         for (int i = 0; i < numOfScissors; i++) {
-            tmp  = new RPSObject("scissors",20,20);
+            tmp  = new RPSObject(g,"scissors",random.nextInt(mainView.mainFrame.getFrameWidth()),random.nextInt(mainView.mainFrame.getFrameHeight()) ,mainView);
             rpsObjects.add(tmp);
         }
         System.out.println(rpsObjects);
     }
-
-    public void paintRPS(Graphics g){
-        for (int i = 0; i < rpsObjects.size(); i++) {
-            RPSObject tmp = rpsObjects.get(i);
-            //g.drawImage(tmp.img,10*i,10*i,10,10,mainView);
-            g.drawRect(10 * i, 10 * i, 10, 10);
-        }
-    }
-
     public boolean overCheck(){
         boolean flag = true;
         int standadType = rpsObjects.get(0).type;

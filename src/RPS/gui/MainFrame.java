@@ -5,14 +5,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class MainFrame extends JFrame {
-    private MainFrame mainFrame = this;
-    private StratDialog stratDialog;
-    private ResultDialog resultDialog;
-    private MainView mainView;
-    int screenHeight;
-    int screenWidth;
-    int frameHeight;
-    int frameWidth;
+    public StratDialog stratDialog;
+    public MainView mainView;
+    private int screenHeight;
+    private int screenWidth;
+    private int frameHeight;
+    private int frameWidth;
+
     public MainFrame() {
         this.setVisible(false);
         Toolkit tk = Toolkit.getDefaultToolkit();
@@ -25,13 +24,11 @@ public class MainFrame extends JFrame {
         setLocation((screenWidth - frameWidth) / 2, (screenHeight - frameHeight) / 2);
         setTitle("RPS");
 
-        mainView = new MainView();
+        mainView = new MainView(this);
         add(mainView);
 
-        stratDialog = new StratDialog(mainFrame);
+        stratDialog = new StratDialog(this,mainView);
         stratDialog.setVisible(true);
-
-
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -40,7 +37,19 @@ public class MainFrame extends JFrame {
             }
         });
     }
-    public void setNumberOfRPSObject(int numOfRock, int numOfPaper, int numOfScissors){
-        mainView.rpsModel.setNumberRPSObject(numOfRock,numOfPaper,numOfScissors);
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getFrameHeight() {
+        return frameHeight;
+    }
+
+    public int getFrameWidth() {
+        return frameWidth;
     }
 }

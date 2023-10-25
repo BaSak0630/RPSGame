@@ -1,36 +1,60 @@
 package RPS.model;
 
+import RPS.gui.MainView;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
-public class RPSObject {
+public class RPSObject extends Thread implements Runnable{
     static final int ROCK = 1;
     static final int PAPER = 2;
     static final int SCISSORS = 3;
 
-    int x;
-    int y;
+    public int x;
+    public int y;
+    protected int xSpeed = 5;
+    protected int ySpeed = 5;
+    protected int xBoundary;
+    protected int yBoundary;
+    protected Graphics g;
 
-    RPSThread thread;
+    MainView mainView;
+
+    public int getType() {
+        return type;
+    }
+
     int type;
-    ImageIcon rockIcon = new ImageIcon("paper.RPS.png");
-    ImageIcon paperIcon = new ImageIcon("rock.RPS.png");
-    ImageIcon scissorsIcon = new ImageIcon("scissors.RPS.png");
-    Image img;
-    public RPSObject(String type,int startX,int startY) {
+    public ImageIcon rockIcon = new ImageIcon("paper.png");
+    public ImageIcon paperIcon = new ImageIcon("rock.png");
+    public ImageIcon scissorsIcon = new ImageIcon("scissors.png");
+
+    public RPSObject(Graphics g, String type, int startX, int startY,MainView mainView) {
+        this.g = g;
+        this.start();
+        this.mainView = mainView;
+        /*xBoundary = mainView.getWidth();
+        yBoundary = mainView.getHeight();*/
+        xBoundary = mainView.mainFrame.getFrameWidth() -28;
+        yBoundary = mainView.mainFrame.getFrameHeight()-50;
         x = startX;
         y = startY;
+        Random a = new Random();
+        if (a.nextBoolean()) {
+            xSpeed = xSpeed * -1;
+        }
+        if (a.nextBoolean()) {
+            ySpeed = ySpeed * -1;
+        }
+
         if(type.equals("rock")){
             this.type = ROCK;
-            img = rockIcon.getImage();
         } else if (type.equals("paper")) {
             this.type = PAPER;
-            img = paperIcon.getImage();
         } else if (type.equals("scissors")) {
             this.type = SCISSORS;
-            img = scissorsIcon.getImage();
         }
-        thread= new RPSThread();
     }
     @Override
     public String toString() {
@@ -43,7 +67,33 @@ public class RPSObject {
             typeStr = "scissors";
         }
         return "RPSObject{" +
-                "type = " + typeStr +
+                "type = " + typeStr +","+ "x = "+ x + ", y = "+y+
                 "}";
+    }
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                System.out.println(this);
+                if(x > xBoundary){
+                    xSpeed = xSpeed * -1;
+                }
+                if (y > yBoundary) {
+                    ySpeed = ySpeed * -1;
+                }
+                if(x < 0){
+                    xSpeed = xSpeed * -1;
+                }
+                if (y < 0) {
+                    ySpeed = ySpeed * -1;
+                }
+                x = x + xSpeed;
+                y = y + ySpeed;
+                mainView.repaint();
+                Thread.sleep(100);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
